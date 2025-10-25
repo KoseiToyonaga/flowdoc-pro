@@ -1,0 +1,128 @@
+import React, { useState } from 'react';
+import './ProjectList.css';
+
+function ProjectList({ projects, onCreateProject, onOpenProject, onDeleteProject }) {
+  const [showModal, setShowModal] = useState(false);
+  const [projectName, setProjectName] = useState('');
+
+  const handleCreate = () => {
+    if (projectName.trim()) {
+      onCreateProject(projectName.trim());
+      setProjectName('');
+      setShowModal(false);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ja-JP', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  return (
+    <div className="project-list">
+      <div className="list-header">
+        <h2>プロジェクト一覧</h2>
+        <button className="btn-primary" onClick={() => setShowModal(true)}>
+          ＋ 新規プロジェクト
+        </button>
+      </div>
+
+      <div className="projects-grid">
+        {projects.length === 0 ? (
+          <div className="empty-state">
+            <p>まだプロジェクトがありません</p>
+            <p className="empty-hint">「新規プロジェクト」ボタンから作成してください</p>
+          </div>
+        ) : (
+          projects.map(project => (
+            <div key={project.id} className="project-card">
+              <div className="card-header">
+                <h3>{project.name}</h3>
+                <button 
+                  className="btn-delete"
+                  onClick={() => {
+                    if (window.confirm('このプロジェクトを削除しますか?')) {
+                      onDeleteProject(project.id);
+                    }
+                  }}
+                >
+                  🗑️
+                </button>
+              </div>
+              
+              <div className="card-info">
+                <div className="info-item">
+                  <span className="label">バージョン:</span>
+                  <span className="value">{project.version}</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">作成日:</span>
+                  <span className="value">{formatDate(project.createdAt)}</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">更新日:</span>
+                  <span className="value">{formatDate(project.updatedAt)}</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">フロー:</span>
+                  <span className="value">{project.flow.nodes.length} ノード</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">ドキュメント:</span>
+                  <span className="value">{project.documents.length} 件</span>
+                </div>
+              </div>
+
+              <div className="card-actions">
+                <button 
+                  className="btn-secondary"
+                  onClick={() => onOpenProject(project, 'flow')}
+                >
+                  フロー編集
+                </button>
+                <button 
+                  className="btn-secondary"
+                  onClick={() => onOpenProject(project, 'document')}
+                >
+                  ドキュメント編集
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>新規プロジェクト作成</h3>
+            <input
+              type="text"
+              placeholder="プロジェクト名を入力"
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleCreate()}
+              autoFocus
+            />
+            <div className="modal-actions">
+              <button className="btn-secondary" onClick={() => setShowModal(false)}>
+                キャンセル
+              </button>
+              <button className="btn-primary" onClick={handleCreate}>
+                作成
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default ProjectList;

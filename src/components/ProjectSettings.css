@@ -1,0 +1,157 @@
+.project-settings-modal {
+  max-width: 700px;
+  max-height: 85vh;
+}
+
+.settings-section {
+  margin-bottom: 24px;
+}
+
+.settings-section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.settings-description {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.status-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e8eaed;
+}
+
+.status-order {
+  width: 32px;
+  height: 32px;
+  background: #667eea;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.status-color-preview {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 2px solid #e8eaed;
+  flex-shrink: 0;
+}
+
+.status-name-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #e8eaed;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.status-name-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.status-color-input {
+  width: 50px;
+  height: 36px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.status-color-input-large {
+  width: 60px;
+  height: 42px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-delete-status {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 6px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-delete-status:hover:not(:disabled) {
+  opacity: 1;
+}
+
+.btn-delete-status:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+.add-status-form {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.settings-info {
+  background: #e7f3ff;
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+  margin-bottom: 20px;
+}
+
+.settings-info h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 12px;
+}
+
+.settings-info ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.settings-info li {
+  font-size: 13px;
+  color: #2c3e50;
+  line-height: 1.8;
+  margin-bottom: 6px;
+}
+
+.btn-secondary {
+  background: white;
+  color: #667eea;
+  border: 1px solid #667eea;
+}
+
+.btn-secondary:hover {
+  background: #667eea;
+  color: white;
+}

@@ -1,0 +1,337 @@
+.glossary-manager-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.glossary-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.glossary-modal-content {
+  position: relative;
+  background: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: rgba(15, 15, 15, 0.1) 0px 10px 24px, rgba(15, 15, 15, 0.05) 0px 0px 0px 1px;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.glossary-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.glossary-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #37352f;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #9b9a97;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #37352f;
+}
+
+.glossary-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 検索バー */
+.glossary-search-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.search-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid rgba(55, 53, 47, 0.16);
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #2383e2;
+  box-shadow: 0 0 0 2px rgba(35, 131, 226, 0.1);
+}
+
+.term-count {
+  font-size: 12px;
+  color: #9b9a97;
+  white-space: nowrap;
+}
+
+/* 追加ボタン */
+.btn-add-term {
+  background: #2383e2;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-add-term:hover {
+  background: #1a6ec7;
+}
+
+/* フォーム */
+.term-form {
+  background: #f8f7f6;
+  padding: 16px;
+  border-radius: 4px;
+  border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #37352f;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(55, 53, 47, 0.16);
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #2383e2;
+  box-shadow: 0 0 0 2px rgba(35, 131, 226, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.btn-cancel,
+.btn-save {
+  padding: 8px 16px;
+  border-radius: 3px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-cancel {
+  background: #f0f0ef;
+  color: #37352f;
+}
+
+.btn-cancel:hover {
+  background: #e8e8e7;
+}
+
+.btn-save {
+  background: #27ae60;
+  color: white;
+}
+
+.btn-save:hover:not(:disabled) {
+  background: #229954;
+}
+
+.btn-save:disabled {
+  background: #bdbdbc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* 用語リスト */
+.glossary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.glossary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 12px;
+  background: white;
+  border: 1px solid rgba(55, 53, 47, 0.09);
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.glossary-item:hover {
+  border-color: rgba(55, 53, 47, 0.2);
+  box-shadow: rgba(15, 15, 15, 0.05) 0px 2px 4px;
+}
+
+.item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-term {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #37352f;
+  word-break: break-word;
+}
+
+.item-description {
+  margin: 0 0 6px 0;
+  font-size: 13px;
+  color: #7a7a78;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.item-date {
+  display: inline-block;
+  font-size: 11px;
+  color: #bdbdbc;
+}
+
+.item-actions {
+  display: flex;
+  gap: 4px;
+  margin-left: 12px;
+}
+
+.btn-edit,
+.btn-delete {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  transition: transform 0.2s;
+}
+
+.btn-edit:hover,
+.btn-delete:hover {
+  transform: scale(1.2);
+}
+
+/* 空の状態 */
+.empty-terms {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+  color: #9b9a97;
+}
+
+.empty-terms p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* スクロールバー */
+.glossary-body::-webkit-scrollbar,
+.glossary-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.glossary-body::-webkit-scrollbar-track,
+.glossary-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.glossary-body::-webkit-scrollbar-thumb,
+.glossary-list::-webkit-scrollbar-thumb {
+  background: rgba(55, 53, 47, 0.16);
+  border-radius: 4px;
+}
+
+.glossary-body::-webkit-scrollbar-thumb:hover,
+.glossary-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(55, 53, 47, 0.3);
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .glossary-modal-content {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .glossary-header {
+    padding: 16px;
+  }
+
+  .glossary-body {
+    padding: 16px;
+  }
+}

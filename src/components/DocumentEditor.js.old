@@ -1,0 +1,284 @@
+import React, { useState, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import './DocumentEditor.css';
+
+function DocumentEditor({ project, onSave, onBack }) {
+  const [documents, setDocuments] = useState(project.documents || []);
+  const [currentDoc, setCurrentDoc] = useState(null);
+  const [content, setContent] = useState('');
+  const [title, setTitle] = useState('');
+  const [showPreview, setShowPreview] = useState(false);
+  const [showDocModal, setShowDocModal] = useState(false);
+  const [newDocTitle, setNewDocTitle] = useState('');
+  const textareaRef = useRef(null);
+
+  const handleCreateDoc = () => {
+    if (newDocTitle.trim()) {
+      const newDoc = {
+        id: Date.now().toString(),
+        title: newDocTitle.trim(),
+        content: '',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      setDocuments([...documents, newDoc]);
+      setCurrentDoc(newDoc);
+      setTitle(newDoc.title);
+      setContent('');
+      setNewDocTitle('');
+      setShowDocModal(false);
+    }
+  };
+
+  const handleSelectDoc = (doc) => {
+    setCurrentDoc(doc);
+    setTitle(doc.title);
+    setContent(doc.content);
+  };
+
+  const handleSave = () => {
+    if (currentDoc) {
+      const updatedDoc = {
+        ...currentDoc,
+        title,
+        content,
+        updatedAt: new Date().toISOString()
+      };
+      onSave(updatedDoc);
+      
+      const updatedDocs = documents.map(d => 
+        d.id === updatedDoc.id ? updatedDoc : d
+      );
+      setDocuments(updatedDocs);
+      setCurrentDoc(updatedDoc);
+      alert('保存しました');
+    }
+  };
+
+  const handleDeleteDoc = (docId) => {
+    const updatedDocs = documents.filter(d => d.id !== docId);
+    setDocuments(updatedDocs);
+    
+    if (currentDoc && currentDoc.id === docId) {
+      setCurrentDoc(null);
+      setTitle('');
+      setContent('');
+    }
+  };
+
+  const insertMarkdown = (before, after = '') => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = content.substring(start, end);
+    const newText = content.substring(0, start) + before + selectedText + after + content.substring(end);
+    
+    setContent(newText);
+    
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(
+        start + before.length,
+        start + before.length + selectedText.length
+      );
+    }, 0);
+  };
+
+  const handleImagePaste = async (e) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf('image') !== -1) {
+        e.preventDefault();
+        const blob = items[i].getAsFile();
+        const reader = new FileReader();
+        
+        reader.onload = (event) => {
+          const base64 = event.target.result;
+          insertMarkdown(`![画像](${base64})`);
+        };
+        
+        reader.readAsDataURL(blob);
+        break;
+      }
+    }
+  };
+
+  const handleImageDrop = async (e) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    
+    if (files.length > 0 && files[0].type.indexOf('image') !== -1) {
+      const reader = new FileReader();
+      
+      reader.onload = (event) => {
+        const base64 = event.target.result;
+        insertMarkdown(`![画像](${base64})`);
+      };
+      
+      reader.readAsDataURL(files[0]);
+    }
+  };
+
+  return (
+    <div className="document-editor">
+      <div className="editor-toolbar">
+        <button className="btn-back" onClick={onBack}>
+          ← 戻る
+        </button>
+        <div className="toolbar-actions">
+          <button className="btn-primary" onClick={() => setShowDocModal(true)}>
+            ＋ 新規ドキュメント
+          </button>
+          <button 
+            className="btn-secondary"
+            onClick={() => setShowPreview(!showPreview)}
+            disabled={!currentDoc}
+          >
+            {showPreview ? '📝 編集' : '👁️ プレビュー'}
+          </button>
+          <button 
+            className="btn-success" 
+            onClick={handleSave}
+            disabled={!currentDoc}
+          >
+            💾 保存
+          </button>
+        </div>
+      </div>
+
+      <div className="editor-content">
+        <div className="document-sidebar">
+          <h3>ドキュメント一覧</h3>
+          <div className="doc-list">
+            {documents.length === 0 ? (
+              <p className="empty-text">ドキュメントがありません</p>
+            ) : (
+              documents.map((doc) => (
+                <div
+                  key={doc.id}
+                  className={`doc-item ${currentDoc?.id === doc.id ? 'active' : ''}`}
+                  onClick={() => handleSelectDoc(doc)}
+                >
+                  <div className="doc-item-header">
+                    <strong>{doc.title}</strong>
+                    <button
+                      className="btn-icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (window.confirm('このドキュメントを削除しますか?')) {
+                          handleDeleteDoc(doc.id);
+                        }
+                      }}
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                  <p className="doc-date">
+                    {new Date(doc.updatedAt).toLocaleDateString('ja-JP')}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        <div className="editor-main">
+          {!currentDoc ? (
+            <div className="empty-state">
+              <p>ドキュメントを選択または新規作成してください</p>
+            </div>
+          ) : (
+            <>
+              <div className="doc-header">
+                <input
+                  type="text"
+                  className="doc-title-input"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="ドキュメントタイトル"
+                />
+              </div>
+
+              {!showPreview ? (
+                <div className="editor-area">
+                  <div className="markdown-toolbar">
+                    <button onClick={() => insertMarkdown('# ')} title="見出し1">H1</button>
+                    <button onClick={() => insertMarkdown('## ')} title="見出し2">H2</button>
+                    <button onClick={() => insertMarkdown('### ')} title="見出し3">H3</button>
+                    <span className="divider">|</span>
+                    <button onClick={() => insertMarkdown('**', '**')} title="太字">
+                      <strong>B</strong>
+                    </button>
+                    <button onClick={() => insertMarkdown('*', '*')} title="斜体">
+                      <em>I</em>
+                    </button>
+                    <button onClick={() => insertMarkdown('~~', '~~')} title="取り消し線">
+                      <s>S</s>
+                    </button>
+                    <span className="divider">|</span>
+                    <button onClick={() => insertMarkdown('- ')} title="リスト">• List</button>
+                    <button onClick={() => insertMarkdown('1. ')} title="番号付きリスト">1. List</button>
+                    <button onClick={() => insertMarkdown('- [ ] ')} title="チェックボックス">☐</button>
+                    <span className="divider">|</span>
+                    <button onClick={() => insertMarkdown('[', '](url)')} title="リンク">🔗</button>
+                    <button onClick={() => insertMarkdown('`', '`')} title="コード">&lt;/&gt;</button>
+                    <button onClick={() => insertMarkdown('```\n', '\n```')} title="コードブロック">{ }</button>
+                  </div>
+                  <textarea
+                    ref={textareaRef}
+                    className="markdown-textarea"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    onPaste={handleImagePaste}
+                    onDrop={handleImageDrop}
+                    onDragOver={(e) => e.preventDefault()}
+                    placeholder="マークダウン形式で記述してください...
+
+画像をドラッグ&ドロップまたは貼り付けできます"
+                  />
+                </div>
+              ) : (
+                <div className="preview-area">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {content}
+                  </ReactMarkdown>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+
+      {showDocModal && (
+        <div className="modal-overlay" onClick={() => setShowDocModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>新規ドキュメント作成</h3>
+            <input
+              type="text"
+              placeholder="ドキュメントタイトルを入力"
+              value={newDocTitle}
+              onChange={(e) => setNewDocTitle(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleCreateDoc()}
+              autoFocus
+            />
+            <div className="modal-actions">
+              <button className="btn-secondary" onClick={() => setShowDocModal(false)}>
+                キャンセル
+              </button>
+              <button className="btn-primary" onClick={handleCreateDoc}>
+                作成
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default DocumentEditor;

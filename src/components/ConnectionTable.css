@@ -1,0 +1,143 @@
+.connection-table-container {
+  background: white;
+  border-bottom: 1px solid #e8eaed;
+  padding: 20px 24px;
+  max-height: 450px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.table-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: auto;
+  flex: 1;
+  border: 1px solid #e8eaed;
+  border-radius: 6px;
+}
+
+.connection-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: white;
+}
+
+.connection-table thead {
+  background: #f8f9fa;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.connection-table th {
+  padding: 12px 14px;
+  text-align: left;
+  font-weight: 600;
+  color: #2c3e50;
+  border-bottom: 2px solid #e8eaed;
+  white-space: nowrap;
+}
+
+.connection-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f0f1f3;
+  vertical-align: middle;
+}
+
+.connection-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.connection-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.index-cell {
+  text-align: center;
+  color: #8899a6;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.arrow-cell {
+  text-align: center;
+  color: #667eea;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.table-select,
+.table-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #e8eaed;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: inherit;
+  transition: all 0.2s;
+  background: white;
+}
+
+.table-select:focus,
+.table-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.table-select {
+  cursor: pointer;
+}
+
+.btn-delete-sm {
+  padding: 6px 12px;
+  background: white;
+  border: 1px solid #ff4757;
+  color: #ff4757;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-delete-sm:hover {
+  background: #ff4757;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(255, 71, 87, 0.3);
+}
+
+.empty-row {
+  text-align: center;
+  padding: 60px 20px !important;
+  color: #adb5bd;
+  font-style: italic;
+  font-size: 14px;
+}
+
+.table-hint {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #8899a6;
+  padding: 8px 12px;
+  background: #f7f8f9;
+  border-radius: 4px;
+  border-left: 3px solid #667eea;
+}

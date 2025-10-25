@@ -1,0 +1,229 @@
+.process-document {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.doc-preview {
+  flex: 1;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #37352f;
+}
+
+.doc-preview h1,
+.doc-preview h2,
+.doc-preview h3 {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.doc-preview h1 { font-size: 24px; }
+.doc-preview h2 { font-size: 20px; }
+.doc-preview h3 { font-size: 16px; }
+
+.doc-preview p {
+  margin-bottom: 12px;
+}
+
+.doc-preview ul,
+.doc-preview ol {
+  margin-left: 20px;
+  margin-bottom: 12px;
+}
+
+.doc-preview li {
+  margin-bottom: 4px;
+}
+
+.doc-preview code {
+  background: rgba(135, 131, 120, 0.15);
+  color: #eb5757;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Consolas', monospace;
+  font-size: 90%;
+}
+
+.doc-preview pre {
+  background: #2f3437;
+  color: rgba(255, 255, 255, 0.81);
+  padding: 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 12px 0;
+  font-family: 'Consolas', monospace;
+  font-size: 13px;
+}
+
+.doc-preview pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+
+.doc-preview img {
+  max-width: 100%;
+  border-radius: 4px;
+  margin: 12px 0;
+}
+
+.doc-preview blockquote {
+  border-left: 3px solid #667eea;
+  padding-left: 12px;
+  margin: 12px 0;
+  color: #666;
+}
+
+.doc-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #adb5bd;
+  font-size: 13px;
+}
+
+.btn-edit {
+  margin-top: 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.btn-edit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.doc-textarea {
+  flex: 1;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e8eaed;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: 'Consolas', monospace;
+  line-height: 1.6;
+  color: #37352f;
+  resize: none;
+}
+
+.doc-textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.doc-textarea::placeholder {
+  color: rgba(55, 53, 47, 0.4);
+}
+
+.slash-menu {
+  position: absolute;
+  background: white;
+  border: 1px solid rgba(55, 53, 47, 0.16);
+  border-radius: 6px;
+  box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, 
+              rgba(15, 15, 15, 0.1) 0px 3px 6px, 
+              rgba(15, 15, 15, 0.2) 0px 9px 24px;
+  padding: 4px;
+  min-width: 240px;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  animation: slideIn 0.15s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slash-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.slash-menu-item:hover,
+.slash-menu-item.selected {
+  background: rgba(55, 53, 47, 0.08);
+}
+
+.slash-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: #f7f8f9;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #667eea;
+}
+
+.slash-label {
+  font-size: 14px;
+  color: #37352f;
+}
+
+.doc-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn-cancel,
+.btn-save {
+  flex: 1;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel {
+  background: white;
+  border: 1px solid #e8eaed;
+  color: #2c3e50;
+}
+
+.btn-cancel:hover {
+  background: #f0f1f3;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+}
+
+.btn-save:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
