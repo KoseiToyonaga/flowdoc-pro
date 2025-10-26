@@ -6,9 +6,18 @@ import RightPanel from './components/RightPanel';
 import Breadcrumb from './components/Breadcrumb';
 import ProjectSettings from './components/ProjectSettings';
 import HelpPage from './components/HelpPage';
+import Login from './components/Login';
+import Register from './components/Register';
+import UserProfile from './components/UserProfile';
+import { useAuth } from './contexts/AuthContext';
 import { loadProjects, saveProjects } from './utils/storage';
 
 function App() {
+  const { currentUser } = useAuth();
+  const [showLogin, setShowLogin] = useState(true);
+  const [showRegister, setShowRegister] = useState(false);
+  const [showUserProfile, setShowUserProfile] = useState(false);
+  
   const [projects, setProjects] = useState([]);
   const [currentProject, setCurrentProject] = useState(null);
   const [currentFlow, setCurrentFlow] = useState(null);
@@ -21,16 +30,18 @@ function App() {
   const [showHelp, setShowHelp] = useState(false);
 
   useEffect(() => {
-    const loadedProjects = loadProjects();
-    setProjects(loadedProjects);
-    if (loadedProjects.length > 0) {
-      setCurrentProject(loadedProjects[0]);
-      if (loadedProjects[0].flows && loadedProjects[0].flows.length > 0) {
-        setCurrentFlow(loadedProjects[0].flows[0]);
-        setFlowPath([loadedProjects[0].flows[0]]);
+    if (currentUser) {
+      const loadedProjects = loadProjects();
+      setProjects(loadedProjects);
+      if (loadedProjects.length > 0) {
+        setCurrentProject(loadedProjects[0]);
+        if (loadedProjects[0].flows && loadedProjects[0].flows.length > 0) {
+          setCurrentFlow(loadedProjects[0].flows[0]);
+          setFlowPath([loadedProjects[0].flows[0]]);
+        }
       }
     }
-  }, []);
+  }, [currentUser]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -56,6 +67,14 @@ function App() {
       document.removeEventListener('mouseup', handleMouseUp);
     };
   }, [isResizing]);
+
+  const handleLogin = (user) => {
+    // AuthContextのloginは既に呼ばれているので、ここでは何もしない
+  };
+
+  const handleRegister = (user) => {
+    // AuthContextのregisterは既に呼ばれているので、ここでは何もしない
+  };
 
   const handleCreateProject = (name, description) => {
     const defaultStatuses = [
@@ -113,7 +132,8 @@ function App() {
       updatedAt: new Date().toISOString(),
       version: '1.0.0',
       statuses: defaultStatuses,
-      flows: [rootFlow]
+      flows: [rootFlow],
+      userId: currentUser.id
     };
 
     const updatedProjects = [...projects, newProject];
@@ -401,6 +421,30 @@ function App() {
     }
   };
 
+  // ログインしていない場合はログイン画面を表示
+  if (!currentUser) {
+    if (showRegister) {
+      return (
+        <Register
+          onRegister={handleRegister}
+          onSwitchToLogin={() => {
+            setShowRegister(false);
+            setShowLogin(true);
+          }}
+        />
+      );
+    }
+    return (
+      <Login
+        onLogin={handleLogin}
+        onSwitchToRegister={() => {
+          setShowLogin(false);
+          setShowRegister(true);
+        }}
+      />
+    );
+  }
+
   return (
     <div className="App">
       <header className="header">
@@ -419,7 +463,9 @@ function App() {
         )}
         <div className="header-icons">
           <button className="icon-btn" onClick={() => setShowHelp(true)} title="ヘルプ">❓</button>
-          <button className="icon-btn" title="ユーザー">👤</button>
+          <button className="icon-btn" onClick={() => setShowUserProfile(true)} title="ユーザー">
+            👤
+          </button>
           <button className="icon-btn" title="設定">⚙️</button>
         </div>
       </header>
@@ -488,6 +534,10 @@ function App() {
 
       {showHelp && (
         <HelpPage onClose={() => setShowHelp(false)} />
+      )}
+
+      {showUserProfile && (
+        <UserProfile onClose={() => setShowUserProfile(false)} />
       )}
     </div>
   );
