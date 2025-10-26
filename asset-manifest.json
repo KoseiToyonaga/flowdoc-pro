@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/flowdoc-pro/static/css/main.afc5e3ae.css",
+    "main.js": "/flowdoc-pro/static/js/main.fb4e01a2.js",
+    "index.html": "/flowdoc-pro/index.html",
+    "main.afc5e3ae.css.map": "/flowdoc-pro/static/css/main.afc5e3ae.css.map",
+    "main.fb4e01a2.js.map": "/flowdoc-pro/static/js/main.fb4e01a2.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.afc5e3ae.css",
+    "static/js/main.fb4e01a2.js"
+  ]
+}
